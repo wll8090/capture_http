@@ -15,7 +15,7 @@ def create_app():
         data=request.data
         url=request.url.replace(host,host_request)
         head=dict(request.headers)
-        if em_manutenção:
+        if em_manutencao:
             return jsonify({'response':False, 'mensg':'serviço em manutenção'})
 
         if request.method=="POST":
