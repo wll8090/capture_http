@@ -3,9 +3,9 @@ import requests
 from json import loads
 
 host='0.0.0.0'
-host_ldap='10.253.251.16'
+host_request=''
 
-em_manutenção=False
+em_manutencao=False
 
 def create_app():
     app=Flask(__name__)
@@ -13,7 +13,7 @@ def create_app():
     @app.before_request
     def log_request_info():
         data=request.data
-        url=request.url.replace(host,host_ldap)
+        url=request.url.replace(host,host_request)
         head=dict(request.headers)
         if em_manutenção:
             return jsonify({'response':False, 'mensg':'serviço em manutenção'})
