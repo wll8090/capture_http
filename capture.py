@@ -1,4 +1,4 @@
-from flask import Flask, request , jsonify
+from flask import Flask, request, jsonify
 import requests
 from json import loads
 
@@ -13,29 +13,26 @@ def create_app():
     @app.before_request
     def log_request_info():
         data=request.data
-        url=request.url.replace(host,host_request)
+        url=request.url.replace(host, host_request)
         head=dict(request.headers)
         if em_manutencao:
             return jsonify({'response':False, 'mensg':'serviço em manutenção'})
 
-        if request.method=="POST":
+        if request.method == "POST":
             data=request.data
-            if data:
-                data=loads(data)
-            else:
-                data={}
+            data=loads(data) if data else {}           
             print(data)
-            r=requests.post(url,headers=head , json=data)
+            r=requests.post(url, headers=head , json=data)
             print(r.text)
             return r.text
         
-        elif request.method=='OPTIONS':
-            r=requests.options(url,headers=head)
+        elif request.method == 'OPTIONS':
+            r=requests.options(url, headers=head)
             print(r.text)
             return r.text
             
-        elif request.method=='GET':
-            r=requests.get(url,headers=head)
+        elif request.method == 'GET':
+            r=requests.get(url, headers=head)
             return r.text
 
     return app
@@ -43,4 +40,4 @@ def create_app():
 
 if __name__=='__main__':
     app=create_app()
-    app.run(port=5001, host=host, debug=1)
+    app.run(port=5001, host=host, em_manutencao)
